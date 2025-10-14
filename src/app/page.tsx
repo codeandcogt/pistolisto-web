@@ -1,6 +1,5 @@
+// import { ModeToggle } from "@/components";
 
 export default function Home() {
-  return (
-    <div className=""></div>
-  );
+  return <div className="">Hola</div>;
 }
