@@ -1,6 +1,5 @@
 "use client"
-import { useRouter } from 'next/navigation' // Para App Router
-// import { useRouter } from 'next/router' // Para Pages Router
+import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -14,13 +13,8 @@ export function LoginCard() {
   const router = useRouter()
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault() // Previene el comportamiento por defecto del formulario
-    
-    // Aquí puedes agregar tu lógica de autenticación
-    // Por ejemplo, validar credenciales, llamar a una API, etc.
-    
-    // Redirigir a otra página
-    router.push('/dashboard') // Cambia '/dashboard' por tu ruta
+    e.preventDefault() 
+    router.push('/workspace/dashboard') 
   }
 
   return (
