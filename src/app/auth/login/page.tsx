@@ -1,5 +1,7 @@
-import React from "react";
+import LoginTemplate from "@/components/templates/loginTemplate/LoginTemplate";
 
 export default function Login() {
-  return <div>Login</div>;
+  return <div>
+    <LoginTemplate />
+  </div>;
 }
