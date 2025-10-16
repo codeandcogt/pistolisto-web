@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="justify-end">
+      <main>
         <Navbar />
         {children}
       </main>

@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
+import ErrorTemplate from "@/components/templates/errorTemplate/ErrorTemplate";
 
 export default function Error() {
-  return <div>Error</div>;
+  return <ErrorTemplate />
 }

@@ -1,1 +1,5 @@
 export * from "./loginTemplate"
+export * from "./errorTemplate"
+export * from "./loadingTemplate"
+export * from "./notFoundTemplate"
+export * from "./homeTemplate"
