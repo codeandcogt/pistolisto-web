@@ -1,24 +1,24 @@
 // import { post } from "@/types/Methods/Methods";
 // import { useQuery } from "@tanstack/react-query";
 
-export interface Cliente {
-  idCliente: number;
-  nombre: string;
-  apellido: string;
-  cui: any;
-  nit: any;
-  email: string;
-  telefono: any;
-  nombreUsuario: string;
-  contrasena: string;
-  fecha_nacimiento: any;
-  genero: any;
-  tipo_cliente: any;
-  primer_login: boolean;
-  estado: boolean;
-  fecha_modificacion: string;
-  fecha_creacion: string;
-}
+// export interface Cliente {
+//   idCliente: number;
+//   nombre: string;
+//   apellido: string;
+//   cui: any;
+//   nit: any;
+//   email: string;
+//   telefono: any;
+//   nombreUsuario: string;
+//   contrasena: string;
+//   fecha_nacimiento: any;
+//   genero: any;
+//   tipo_cliente: any;
+//   primer_login: boolean;
+//   estado: boolean;
+//   fecha_modificacion: string;
+//   fecha_creacion: string;
+//}
 
 export const useLogin = () => {
   // const fetch = async (): Promise<Cliente> => {
