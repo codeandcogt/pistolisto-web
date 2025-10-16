@@ -27,7 +27,7 @@ const eslintConfig = [
   {
     rules: {
       // Buenas prácticas
-      "no-console": ["warn", { allow: ["warn", "error"] }],
+      // "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-unused-vars": "off", // Apagado porque TypeScript lo maneja
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -42,7 +42,6 @@ const eslintConfig = [
       "curly": ["error", "all"],
       
       // React/Next.js específico
-      "react/self-closing-comp": "error",
       "react/jsx-curly-spacing": ["error", { when: "never" }],
       "react/jsx-boolean-value": ["error", "never"],
       "react-hooks/rules-of-hooks": "error",

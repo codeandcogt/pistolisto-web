@@ -1,12 +1,17 @@
 "use client"
 
 import { LoginCard } from "@/components/organism"
+// import { useLogin } from "@/hooks/useLogin/useLogin"
 import Image from "next/image"
 
 export default function LoginTemplate() {
+
+  // const {data, error,isError,isLoading} = useLogin()
+
+  // console.log(data, error, isError, isLoading)
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-gradient-to-tr from-black via-transparent to-green-900">
-      <div className="w-full p-6 flex justify-end ">
+      <div className=" p-6 fixed top-0 left-0 right-0">
         <Image 
           src="/svg/logo.svg" 
           alt="Logo"
@@ -16,8 +21,8 @@ export default function LoginTemplate() {
         />
       </div>
 
-      <div className="flex flex-1 items-center justify-center">
-        <div className="w-full max-w-md">
+      <div className="flex flex-1 items-center justify-center ">
+        <div className="w-full max-w-md mx-7">
           <LoginCard/>
         </div>
       </div>
