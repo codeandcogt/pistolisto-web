@@ -1,17 +1,27 @@
-"use client"
-import { LogOutIcon, MoreHorizontalIcon, SettingsIcon } from "lucide-react"
+"use client";
+import { LogOutIcon, MoreHorizontalIcon, SettingsIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ModeToggle } from "@/components/atom"
+} from "@/components/ui/dropdown-menu";
+import { ModeToggle } from "@/components/atom";
+import { useAuthStore } from "@/store";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
+  const { logout } = useAuthStore();
+  const router = useRouter();
+
+  const Logout = () => {
+    router.push("/");
+    logout();
+  };
+
   return (
     <aside className="fixed top-0 left-0 right-0 p-4 flex gap-4 justify-end ">
       <ModeToggle />
@@ -27,7 +37,7 @@ export function Navbar() {
               <SettingsIcon />
               Configuraciones
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={Logout}>
               <LogOutIcon />
               Cerrar sesión
             </DropdownMenuItem>
@@ -35,5 +45,5 @@ export function Navbar() {
         </DropdownMenuContent>
       </DropdownMenu>
     </aside>
-  )
+  );
 }
