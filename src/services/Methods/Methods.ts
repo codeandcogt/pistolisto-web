@@ -13,9 +13,7 @@ const handleRequest = async <T>(
   request: Promise<AxiosResponse<ApiResponse<T>>>
 ): Promise<ApiResponse<T>> => {
   try {
-    console.log(API_BASE_URL, "valores")
     const response = await request;
-    console.log(response, "entra aqui");
     return {
       code: response.data.code,
       message: response.data.message || "Success",
