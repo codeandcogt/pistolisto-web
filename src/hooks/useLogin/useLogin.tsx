@@ -1,47 +1,30 @@
-// import { post } from "@/types/Methods/Methods";
-// import { useQuery } from "@tanstack/react-query";
+import { post } from "@/services";
+import { useAuthStore } from "@/store";
+import { DataSesion } from "@/types";
+import { useMutation } from "@tanstack/react-query";
 
-// export interface Cliente {
-//   idCliente: number;
-//   nombre: string;
-//   apellido: string;
-//   cui: any;
-//   nit: any;
-//   email: string;
-//   telefono: any;
-//   nombreUsuario: string;
-//   contrasena: string;
-//   fecha_nacimiento: any;
-//   genero: any;
-//   tipo_cliente: any;
-//   primer_login: boolean;
-//   estado: boolean;
-//   fecha_modificacion: string;
-//   fecha_creacion: string;
-//}
+interface LoginInterface {
+  email: string;
+  contrasena: string;
+}
 
 export const useLogin = () => {
-  // const fetch = async (): Promise<Cliente> => {
-    // const response = await post<Cliente>("auth/client", {
-    //   email: "smejia@example.com",
-    //   contrasena: "654321",
-    // });
+  const { setAuth } = useAuthStore();
 
-    // if (!response.Data) {
-    //   throw new Error(response.Message || "No se recibieron datos");
-    // }
+  const loginFn = async ({ email, contrasena }: LoginInterface): Promise<string> => {
+    const response = await post<DataSesion>("auth/admin", {
+      email,
+      contrasena,
+    });
+    
+    if (!response.data) {
+      throw new Error(response.message || "No se recibieron datos");
+    }
+    setAuth(response.data)
+    return response.message;
+  };
 
-    // return response.Data;
-  // };
-
-  const { data, isLoading, error } = {data: "", isLoading: false, error:false,}
-  //  = useQuery<Cliente, Error>(
-  //   {
-  //     queryKey: ["area-api"],
-  //     queryFn: fetch,
-  //     staleTime: 500,
-  //   }
-  // );
-
-  return { data, isLoading, error };
+  return useMutation<string, Error, LoginInterface>({
+    mutationFn: loginFn,
+  });
 };
