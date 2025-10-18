@@ -18,8 +18,8 @@ export function Navbar() {
   const router = useRouter();
 
   const Logout = () => {
-    router.push("/");
     logout();
+    router.push("/");
   };
 
   return (

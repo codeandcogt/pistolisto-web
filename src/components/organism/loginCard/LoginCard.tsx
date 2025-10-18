@@ -44,7 +44,7 @@ export function LoginCard() {
       {
         onSuccess: () => {
           toast.success("¡Inicio de sesión exitoso!", {
-            description: "Bienvenido de nuevo, nos alegra verte 😊",
+            description: "Bienvenido de nuevo, nos alegra verte",
           });
           router.push("/workspace/dashboard");
         },
