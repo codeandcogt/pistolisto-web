@@ -34,7 +34,6 @@ export function LoginCard() {
   const { mutate, isPending } = useLogin();
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log("Datos del formulario:", data);
 
     mutate(
       {

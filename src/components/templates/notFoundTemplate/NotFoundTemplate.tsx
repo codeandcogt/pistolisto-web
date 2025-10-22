@@ -10,7 +10,6 @@ export default function NotFoundTemplate() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Astronauta flotando
       gsap.to(".astronaut", {
         y: -30,
         rotation: 5,
@@ -20,7 +19,6 @@ export default function NotFoundTemplate() {
         ease: "sine.inOut",
       })
 
-      // Estrellas parpadeando
       gsap.to(".star", {
         opacity: 0.3,
         scale: 0.8,
@@ -31,7 +29,6 @@ export default function NotFoundTemplate() {
         ease: "sine.inOut",
       })
 
-      // Entrada del texto
       gsap.from(".title", {
         opacity: 0,
         y: -50,
