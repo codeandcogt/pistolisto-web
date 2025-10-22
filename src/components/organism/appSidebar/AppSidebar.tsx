@@ -1,5 +1,6 @@
 "use client";
 import { Settings, ChevronDown, LogOut } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import {
   Sidebar,
@@ -35,22 +36,31 @@ import Link from "next/link";
 import { navigationItems, Role } from "@/lib";
 import { useAuthStore } from "@/store";
 import { useRouter } from "next/navigation";
+import { SidebarSkeleton } from "../skeletonSidebar/skeletonSidebar";
 
 export function AppSidebar() {
   const { admin, logout } = useAuthStore();
-  const router = useRouter()
-  if (admin === null) return;
-  const hasAccess = (roles: Role[]) => roles.includes(admin.id_rol);
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
-  const visibleItems = navigationItems.filter((item) => hasAccess(item.roles));
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const handleLogout = ()=>{
-    logout()
-    router.push("/")
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  if (!mounted || !admin) {
+    return <SidebarSkeleton />;
   }
 
+  const hasAccess = (roles: Role[]) => roles.includes(admin.id_rol);
+  const visibleItems = navigationItems.filter((item) => hasAccess(item.roles));
+
   return (
-    <Sidebar>
+    <Sidebar suppressHydrationWarning>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -149,16 +159,18 @@ export function AppSidebar() {
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
                       src="/abstract-geometric-shapes.png"
-                      alt="Sarah Johnson"
+                      alt={admin.nombre}
                     />
-                    <AvatarFallback className="rounded-lg">SJ</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">
+                      {admin.nombre?.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      Sarah Johnson
+                      {admin.nombre}
                     </span>
                     <span className="truncate text-xs text-muted-foreground">
-                      sarah@acmecorp.com
+                      {admin.email}
                     </span>
                   </div>
                   <ChevronDown className="ml-auto size-4" />
@@ -175,16 +187,18 @@ export function AppSidebar() {
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage
                         src="/abstract-geometric-shapes.png"
-                        alt="Sarah Johnson"
+                        alt={admin.nombre}
                       />
-                      <AvatarFallback className="rounded-lg">SJ</AvatarFallback>
+                      <AvatarFallback className="rounded-lg">
+                        {admin.nombre?.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">
-                        Sarah Johnson
+                        {admin.nombre}
                       </span>
                       <span className="truncate text-xs text-muted-foreground">
-                        sarah@acmecorp.com
+                        {admin.email}
                       </span>
                     </div>
                   </div>

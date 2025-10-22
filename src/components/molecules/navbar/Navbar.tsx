@@ -12,6 +12,7 @@ import {
 import { ModeToggle } from "@/components/atom";
 import { useAuthStore } from "@/store";
 import { useRouter } from "next/navigation";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export function Navbar() {
   const { logout } = useAuthStore();
@@ -23,27 +24,31 @@ export function Navbar() {
   };
 
   return (
-    <aside className="fixed top-0 left-0 right-0 p-4 flex gap-4 justify-end ">
-      <ModeToggle />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" aria-label="More Options">
-            <MoreHorizontalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-52">
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <SettingsIcon />
-              Configuraciones
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={Logout}>
-              <LogOutIcon />
-              Cerrar sesión
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <aside className="p-4 flex gap-4 justify-between items-center">
+      <SidebarTrigger />
+      
+      <div className="flex gap-4 items-center">
+        <ModeToggle />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" aria-label="More Options">
+              <MoreHorizontalIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <SettingsIcon />
+                Configuraciones
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={Logout}>
+                <LogOutIcon />
+                Cerrar sesión
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </aside>
   );
 }
