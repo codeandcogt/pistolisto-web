@@ -1,53 +1,65 @@
 import { Admin, DataSesion } from "@/types";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 interface AuthStore {
   admin: Admin | null;
   token: string | null;
   isAuthenticated: boolean;
 
-  // Acciones
   setAuth: (data: DataSesion) => void;
   updateAdminAdmin: (adminAdmin: Partial<Admin>) => void;
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>()(
-  persist(
-    (set) => ({
+const parseCookie = <T,>(value: string | undefined, defaultValue: T): T => {
+  if (!value) return defaultValue;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return defaultValue;
+  }
+};
+
+export const useAuthStore = create<AuthStore>()((set, get) => ({
+  admin: parseCookie<Admin | null>(Cookies.get("auth-admin"), null),
+  token: Cookies.get("auth-token") || null,
+  isAuthenticated: !!Cookies.get("auth-token"),
+
+  setAuth: (data) => {
+    Cookies.set("auth-token", data.token, { expires: 7 });
+    Cookies.set("auth-admin", JSON.stringify(data.admin), { expires: 7 });
+    Cookies.set("auth-isAuthenticated", "true", { expires: 7 });
+
+    set({
+      admin: data.admin,
+      token: data.token,
+      isAuthenticated: true,
+    });
+  },
+
+  updateAdminAdmin: (adminAdminData) => {
+    const currentAdmin = get().admin;
+    const updatedAdmin = currentAdmin 
+      ? { ...currentAdmin, ...adminAdminData } 
+      : null;
+
+    if (updatedAdmin) {
+      Cookies.set("auth-admin", JSON.stringify(updatedAdmin), { expires: 7 });
+    }
+
+    set({ admin: updatedAdmin });
+  },
+
+  logout: () => {
+    Cookies.remove("auth-token");
+    Cookies.remove("auth-admin");
+    Cookies.remove("auth-isAuthenticated");
+
+    set({
       admin: null,
       token: null,
       isAuthenticated: false,
-
-      setAuth: (data) => {
-        Cookies.set('auth-token', data.token, { expires: 7 });
-        
-        set({
-          admin: data.admin,
-          token: data.token,
-          isAuthenticated: true,
-        });
-      },
-
-      updateAdminAdmin: (adminAdminData) =>
-        set((state) => ({
-          admin: state.admin ? { ...state.admin, ...adminAdminData } : null,
-        })),
-
-      logout: () => {
-        Cookies.remove('auth-token');
-        
-        set({
-          admin: null,
-          token: null,
-          isAuthenticated: false,
-        });
-      },
-    }),
-    {
-      name: "auth-storage",
-    }
-  )
-);
+    });
+  },
+}));

@@ -1,9 +1,6 @@
-"use client"
-import {
-  Settings,
-  ChevronDown,
-  LogOut,
-} from "lucide-react"
+"use client";
+import { Settings, ChevronDown, LogOut } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import {
   Sidebar,
@@ -19,8 +16,8 @@ import {
   SidebarSeparator,
   SidebarGroup,
   SidebarGroupContent,
-} from "@/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,30 +25,61 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import Image from "next/image"
-import Link from "next/link"
-import { AppSidebarProps, navigationItems, UserRole } from "@/lib"
+} from "@/components/ui/dropdown-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import Image from "next/image";
+import Link from "next/link";
+import { navigationItems, Role } from "@/lib";
+import { useAuthStore } from "@/store";
+import { useRouter } from "next/navigation";
+import { SidebarSkeleton } from "../skeletonSidebar/skeletonSidebar";
 
-export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
-  const hasAccess = (roles: UserRole[]) => roles.includes(userRole)
+export function AppSidebar() {
+  const { admin, logout } = useAuthStore();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
-  const visibleItems = navigationItems.filter((item) => hasAccess(item.roles))
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  if (!mounted || !admin) {
+    return <SidebarSkeleton />;
+  }
+
+  const hasAccess = (roles: Role[]) => roles.includes(admin.id_rol);
+  const visibleItems = navigationItems.filter((item) => hasAccess(item.roles));
 
   return (
-    <Sidebar>
+    <Sidebar suppressHydrationWarning>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href={"/workspace/dashboard"}>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-neutral-700 text-sidebar-primary-foreground">
-                  <Image src="/svg/home.svg" alt="Logo" width={20} height={20} className="object-contain" />
+                  <Image
+                    src="/svg/home.svg"
+                    alt="Logo"
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Pisto Listo</span>
-                  <span className="text-xs text-muted-foreground">Enterprise</span>
+                  <span className="text-xs text-muted-foreground">
+                    Enterprise
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -68,7 +96,12 @@ export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
               {visibleItems.map((item) => {
                 if (item.items) {
                   return (
-                    <Collapsible key={item.title} asChild defaultOpen={false} className="group/collapsible">
+                    <Collapsible
+                      key={item.title}
+                      asChild
+                      defaultOpen={false}
+                      className="group/collapsible"
+                    >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton tooltip={item.title}>
@@ -95,7 +128,7 @@ export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
                         </CollapsibleContent>
                       </SidebarMenuItem>
                     </Collapsible>
-                  )
+                  );
                 }
 
                 return (
@@ -107,7 +140,7 @@ export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -124,12 +157,21 @@ export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src="/abstract-geometric-shapes.png" alt="Sarah Johnson" />
-                    <AvatarFallback className="rounded-lg">SJ</AvatarFallback>
+                    <AvatarImage
+                      src="/abstract-geometric-shapes.png"
+                      alt={admin.nombre}
+                    />
+                    <AvatarFallback className="rounded-lg">
+                      {admin.nombre?.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">Sarah Johnson</span>
-                    <span className="truncate text-xs text-muted-foreground">sarah@acmecorp.com</span>
+                    <span className="truncate font-semibold">
+                      {admin.nombre}
+                    </span>
+                    <span className="truncate text-xs text-muted-foreground">
+                      {admin.email}
+                    </span>
                   </div>
                   <ChevronDown className="ml-auto size-4" />
                 </SidebarMenuButton>
@@ -143,12 +185,21 @@ export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src="/abstract-geometric-shapes.png" alt="Sarah Johnson" />
-                      <AvatarFallback className="rounded-lg">SJ</AvatarFallback>
+                      <AvatarImage
+                        src="/abstract-geometric-shapes.png"
+                        alt={admin.nombre}
+                      />
+                      <AvatarFallback className="rounded-lg">
+                        {admin.nombre?.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">Sarah Johnson</span>
-                      <span className="truncate text-xs text-muted-foreground">sarah@acmecorp.com</span>
+                      <span className="truncate font-semibold">
+                        {admin.nombre}
+                      </span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {admin.email}
+                      </span>
                     </div>
                   </div>
                 </DropdownMenuLabel>
@@ -158,7 +209,7 @@ export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
                   Configuraciones
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   Cerrar sesión
                 </DropdownMenuItem>
@@ -168,5 +219,5 @@ export function AppSidebar({ userRole = "user" }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
