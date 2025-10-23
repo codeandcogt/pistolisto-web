@@ -1,70 +1,72 @@
 "use client";
 
 import { DataTable } from "@/components/organism/dataTable/DataTable";
-import { useUser } from "@/hooks/useUser/useUser";
+import { useRole } from "@/hooks/useRole/useRole";
 import { useRouter } from "next/navigation";
-import { createColumns } from "./Columns";
 import { Modal } from "@/components/molecules";
-import { useUserStore } from "@/store/users/Users";
 import { useMemo } from "react";
-import { getModalTexts } from "./const";
-import { UserForm } from "./Form";
 import { Button } from "@/components/ui/button";
 import { SkeletonDataTable } from "@/components/organism";
+import { useRoleStore } from "@/store";
+import { createColumns } from "./Columns";
+import { getModalTexts } from "./const";
+import { RoleForm } from "./Form";
 
-export function UserTemplate() {
-  const { users, isLoading, isError, deleteUserAsync } = useUser();
+export function RoleTemplate() {
+  const { roles, isLoading, isError, deleteRoleAsync } = useRole();
   const {
     modal,
-    openModalWithUser,
+    openModalWithRole,
     openCreateModal,
     toggleModal,
     modalMode,
-    selectedUser,
-  } = useUserStore();
+    selectRole,
+  } = useRoleStore();
   const router = useRouter();
 
   const columns = useMemo(
     () =>
       createColumns(
-        (user) => openModalWithUser(user, "edit"),
-        (user) => {
-          openModalWithUser(user, "delete");
+        (role) => openModalWithRole(role, "edit"),
+        (role) => {
+          openModalWithRole(role, "delete");
         }
       ),
-    [openModalWithUser]
+    [openModalWithRole]
   );
 
-  if (isLoading) return <SkeletonDataTable/>;
+  if (isLoading) return <SkeletonDataTable />;
   if (isError) router.push("/unauthorized");
 
-  const handleAddUser = () => {
+  const handleAddRole = () => {
     openCreateModal();
   };
 
-  const handlerDelete = ()=>{
-    deleteUserAsync(selectedUser?.id_administrativo)
-    toggleModal()
-  }
+  const handlerDelete = () => {
+    if (selectRole?.id_rol) {
+      deleteRoleAsync(selectRole.id_rol);
+      toggleModal();
+    }
+  };
 
   const modalTexts = getModalTexts(modalMode);
 
   return (
     <div className="container mx-auto p-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Usuarios</h1>
+        <h1 className="text-3xl font-bold">Roles</h1>
         <p className="text-muted-foreground">
-          Gestiona los usuarios administrativos
+          Gestiona los roles del sistema
         </p>
       </div>
 
       <DataTable
         columns={columns}
-        data={users}
+        data={roles}
         searchKey="nombre"
         searchPlaceholder="Buscar por nombre..."
-        onAdd={handleAddUser}
-        addButtonLabel="Agregar Usuario"
+        onAdd={handleAddRole}
+        addButtonLabel="Agregar Rol"
       />
 
       <Modal
@@ -77,29 +79,32 @@ export function UserTemplate() {
           <div className="space-y-4">
             <div className="py-4">
               <p className="text-sm text-muted-foreground mb-2">
-                Usuario:{" "}
+                Rol:{" "}
+                <span className="font-semibold">{selectRole?.nombre}</span>
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Descripción:{" "}
                 <span className="font-semibold">
-                  {selectedUser?.nombre} {selectedUser?.apellido}
+                  {selectRole?.descripcion}
                 </span>
               </p>
               <p className="text-sm text-muted-foreground">
-                Email:{" "}
-                <span className="font-semibold">{selectedUser?.email}</span>
+                Nivel: <span className="font-semibold">{selectRole?.nivel}</span>
               </p>
             </div>
             <div className="sticky bottom-0 bg-background pt-4 border-t flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={toggleModal}>
                 Cancelar
               </Button>
-              <Button type="submit" onClick={handlerDelete}>
+              <Button variant="destructive" type="button" onClick={handlerDelete}>
                 Eliminar
               </Button>
             </div>
           </div>
         ) : (
-          <UserForm
+          <RoleForm
             mode={modalMode as "create" | "edit"}
-            user={selectedUser || undefined}
+            role={selectRole || undefined}
           />
         )}
       </Modal>

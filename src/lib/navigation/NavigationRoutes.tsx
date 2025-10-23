@@ -1,6 +1,9 @@
 import {
+  Banknote,
   BarChart3,
+  Building2,
   ClipboardCheck,
+  Coins,
   FileText,
   Home,
   MapPin,
@@ -57,6 +60,25 @@ export const navigationItems = [
         title: "Permisos segun rol",
         icon: ShieldCheck,
         url: "/workspace/rolePermissions",
+        roles: [Role.ADMIN],
+      },
+    ],
+  },
+  {
+    title: "Gestión Financiera",
+    icon: Banknote,
+    roles: [Role.ADMIN],
+    items: [
+      {
+        title: "Bancos",
+        icon: Building2,
+        url: "/workspace/bank",
+        roles: [Role.ADMIN],
+      },
+      {
+        title: "Moneda",
+        icon: Coins,
+        url: "/workspace/coin",
         roles: [Role.ADMIN],
       },
     ],
