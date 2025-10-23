@@ -1,3 +1,5 @@
+import { UserTemplate } from "@/components";
+
 export default function Users() {
-  return <div>User</div>;
+  return <UserTemplate/>;
 }
