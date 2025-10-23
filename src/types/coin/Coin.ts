@@ -6,6 +6,6 @@ export interface Coin {
   tasaCambio: number
   descripcion: string
   estado: boolean
-  fechaCreacion: string
-  fechaModificacion: string
+  fecha_creacion: string
+  fecha_modificacion: string
 }
