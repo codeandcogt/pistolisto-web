@@ -13,59 +13,62 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { RolFormValue, RolSchema } from "./RoleSchema";
-import { useRoleStore } from "@/store";
-import { useRole } from "@/hooks/useRole/useRole";
+import { usePermissionStore } from "@/store";
+import { usePermission } from "@/hooks/usePermission/usePermission";
+import { PermissionFormValue, PermissionSchema } from "./PermissionSchema";
 
-interface Role {
-  id_rol: number;
+interface Permission {
+  id_permiso: number;
   nombre: string;
+  accion: string;
   descripcion: string;
-  nivel: number;
+  estado: boolean;
+  fecha_creacion: string;
+  fecha_modificacion: string;
 }
 
-interface RoleFormProps {
+interface PermissionFormProps {
   mode: "create" | "edit";
-  role?: Role;
+  permission?: Permission;
 }
 
-export function RoleForm({ mode, role }: RoleFormProps) {
-  const { createRoleAsync, updateRoleAsync } = useRole();
-  const { toggleModal } = useRoleStore();
+export function PermissionForm({ mode, permission }: PermissionFormProps) {
+  const { createPermissionAsync, updatePermissionAsync } = usePermission();
+  const { toggleModal } = usePermissionStore();
 
   const isEditMode = mode === "edit";
 
-  const form = useForm<RolFormValue>({
-    resolver: zodResolver(RolSchema),
-    defaultValues: isEditMode && role
+  const form = useForm<PermissionFormValue>({
+    resolver: zodResolver(PermissionSchema),
+    defaultValues: isEditMode && permission
       ? {
-          nombre: role.nombre,
-          descripcion: role.descripcion,
-          nivel: role.nivel,
+          nombre: permission.nombre,
+          accion: permission.accion,
+          descripcion: permission.descripcion,
         }
       : {
           nombre: "",
+          accion: "",
           descripcion: "",
-          nivel: 1,
         },
   });
 
-  const onSubmit = async (data: RolFormValue) => {
+  const onSubmit = async (data: PermissionFormValue) => {
     try {
-      if (isEditMode && role) {
-        // Editar rol existente
-        await updateRoleAsync({
+      if (isEditMode && permission) {
+        // Editar permiso existente
+        await updatePermissionAsync({
           ...data,
-          id_rol: role.id_rol,
+          id_permiso: permission.id_permiso,
         });
       } else {
-        // Crear nuevo rol
-        await createRoleAsync(data);
+        // Crear nuevo permiso
+        await createPermissionAsync(data);
       }
       toggleModal();
       form.reset();
     } catch (error) {
-      console.error("Error al guardar rol:", error);
+      console.error("Error al guardar permiso:", error);
     }
   };
 
@@ -81,7 +84,25 @@ export function RoleForm({ mode, role }: RoleFormProps) {
               <FormItem>
                 <FormLabel>Nombre *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ingresa el nombre del rol" {...field} />
+                  <Input placeholder="Ingresa el nombre del permiso" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Acción */}
+          <FormField
+            control={form.control}
+            name="accion"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Acción *</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="Ej: crear, editar, eliminar, ver" 
+                    {...field} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -97,32 +118,10 @@ export function RoleForm({ mode, role }: RoleFormProps) {
                 <FormLabel>Descripción *</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Describe las funciones del rol"
+                    placeholder="Describe las funciones del permiso"
                     className="resize-none"
                     rows={4}
                     {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Nivel */}
-          <FormField
-            control={form.control}
-            name="nivel"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nivel *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={1}
-                    max={10}
-                    placeholder="1-10"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormMessage />
@@ -141,7 +140,7 @@ export function RoleForm({ mode, role }: RoleFormProps) {
               ? "Guardando..."
               : isEditMode
               ? "Guardar Cambios"
-              : "Crear Rol"}
+              : "Crear Permiso"}
           </Button>
         </div>
       </form>

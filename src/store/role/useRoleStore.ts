@@ -1,7 +1,5 @@
-import { Role } from '@/types';
+import { ModalMode, Role } from '@/types';
 import { create } from 'zustand';
-
-export type ModalMode = 'create' | 'edit' | 'delete';
 
 interface RoleStore {
   modal: boolean;
