@@ -27,9 +27,9 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
   isAuthenticated: !!Cookies.get("auth-token"),
 
   setAuth: (data) => {
-    Cookies.set("auth-token", data.token, { expires: 7 });
-    Cookies.set("auth-admin", JSON.stringify(data.admin), { expires: 7 });
-    Cookies.set("auth-isAuthenticated", "true", { expires: 7 });
+    Cookies.set("auth-token", data.token, { expires: 1 });
+    Cookies.set("auth-admin", JSON.stringify(data.admin), { expires: 1 });
+    Cookies.set("auth-isAuthenticated", "true", { expires: 1 });
 
     set({
       admin: data.admin,
