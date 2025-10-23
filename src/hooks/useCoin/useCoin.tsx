@@ -76,9 +76,9 @@ export const useCoin = () => {
   });
 
   const deleteCoin = useMutation({
-    mutationFn: async (bankId: number | undefined) => {
+    mutationFn: async (id: number | undefined) => {
       const response = await remove<Coin>(
-        `monedas/${bankId}`,
+        `monedas/${id}`,
         token ?? undefined
       );
       
