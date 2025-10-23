@@ -6,7 +6,9 @@ import {
   Coins,
   FileText,
   Home,
+  Map,
   MapPin,
+  MapPinHouse,
   Package,
   Route,
   Settings,
@@ -79,6 +81,25 @@ export const navigationItems = [
         title: "Moneda",
         icon: Coins,
         url: "/workspace/coin",
+        roles: [Role.ADMIN],
+      },
+    ],
+  },
+  {
+    title: "Gestión Territorial",
+    icon: Map,
+    roles: [Role.ADMIN],
+    items: [
+      {
+        title: "Departamento",
+        icon: MapPinHouse,
+        url: "/workspace/departamento",
+        roles: [Role.ADMIN],
+      },
+      {
+        title: "Municipio",
+        icon: MapPin,
+        url: "/workspace/municipio",
         roles: [Role.ADMIN],
       },
     ],
@@ -174,7 +195,7 @@ export const navigationItems = [
         icon: BarChart3,
         url: "/workspace/evaluo/reportes",
         roles: [Role.ADMIN, Role.EVALUADOR],
-      }
+      },
     ],
   },
   {
