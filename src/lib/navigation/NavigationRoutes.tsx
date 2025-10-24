@@ -203,7 +203,13 @@ export const navigationItems = [
       {
         title: "Categorías",
         icon: FileText,
-        url: "/workspace/articulos/categorias",
+        url: "/workspace/categoria",
+        roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
+      },
+      {
+        title: "SubCategorías",
+        icon: FileText,
+        url: "/workspace/subcategoria",
         roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
       },
     ],
