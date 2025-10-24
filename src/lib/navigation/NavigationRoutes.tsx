@@ -1,6 +1,7 @@
 import {
   Banknote,
   BarChart3,
+  Building,
   Building2,
   ClipboardCheck,
   Coins,
@@ -15,6 +16,7 @@ import {
   Shield,
   ShieldCheck,
   ShoppingCart,
+  Store,
   TrendingUp,
   UserCog,
   Users,
@@ -62,6 +64,19 @@ export const navigationItems = [
         title: "Permisos segun rol",
         icon: ShieldCheck,
         url: "/workspace/rolePermissions",
+        roles: [Role.ADMIN],
+      },
+    ],
+  },
+  {
+    title: "Gestión de Sucursales",
+    icon: Store,
+    roles: [Role.ADMIN],
+    items: [
+      {
+        title: "Sucursales",
+        icon: Building,
+        url: "/workspace/sucursal",
         roles: [Role.ADMIN],
       },
     ],

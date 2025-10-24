@@ -59,7 +59,8 @@ export const useSucursal = () => {
         data,
         token ?? undefined
       );
-
+      console.log(JSON.stringify(data))
+      console.log(response)
       if (!response.data) {
         throw new Error(response.message || "Error al actualizar");
       }

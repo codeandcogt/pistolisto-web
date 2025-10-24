@@ -1,5 +1,7 @@
 "use client";
 
+import { DepartmentTemplate } from "@/components";
+
 export default function Departamento() {
-  return <div>Departamento</div>;
+  return <DepartmentTemplate/>;
 }

@@ -19,6 +19,21 @@ import { useSucursal } from "@/hooks/useSucursal/useSucursal";
 import { useSucursalStore } from "@/store";
 import { BranchFormValue, BranchSchema } from "./SucursalSchema";
 
+// Funciones helper
+const formatTimeToDateTime = (time: string) => {
+  const today = new Date().toISOString().split('T')[0];
+  return `${today}T${time}:00Z`;
+};
+
+const extractTime = (datetime: string) => {
+  if (!datetime) return "";
+  // Si es formato completo: "2024-01-15T08:00:00Z" -> "08:00"
+  const timePart = datetime.split('T')[1];
+  if (timePart) {
+    return timePart.substring(0, 5);
+  }
+  return datetime;
+};
 
 interface BranchFormProps {
   mode: "create" | "edit";
@@ -41,8 +56,8 @@ export function BranchForm({ mode, branch }: BranchFormProps) {
           telefono: branch.telefono,
           email: branch.email,
           direccion: branch.direccion,
-          hora_apertura: branch.hora_apertura,
-          hora_cierre: branch.hora_cierre,
+          hora_apertura: extractTime(branch.hora_apertura),
+          hora_cierre: extractTime(branch.hora_cierre),
         }
       : {
           nombre: "",
@@ -58,15 +73,21 @@ export function BranchForm({ mode, branch }: BranchFormProps) {
 
   const onSubmit = async (data: BranchFormValue) => {
     try {
+      const formattedData = {
+        ...data,
+        hora_apertura: formatTimeToDateTime(data.hora_apertura),
+        hora_cierre: formatTimeToDateTime(data.hora_cierre),
+      };
+
       if (isEditMode && branch) {
         // Editar sucursal existente
         await updateSucursalAsync({
-          ...data,
+          ...formattedData,
           idSucursal: branch.idSucursal,
         });
       } else {
         // Crear nueva sucursal
-        await createSucursalAsync(data);
+        await createSucursalAsync(formattedData);
       }
       toggleModal();
       form.reset();
@@ -112,9 +133,6 @@ export function BranchForm({ mode, branch }: BranchFormProps) {
                       }
                     />
                   </FormControl>
-                  <FormDescription>
-                    Código de la sucursal (se convertirá a mayúsculas)
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

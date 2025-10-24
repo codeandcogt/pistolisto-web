@@ -12,7 +12,7 @@ import { useSucursal } from "@/hooks/useSucursal/useSucursal";
 import { useSucursalStore } from "@/store";
 import { BranchForm } from "./SucursalForm";
 
-export function BranchTemplate() {
+export function SucursalTemplate() {
   const { sucursales, isLoading, isError, deleteSucursalAsync } = useSucursal();
   const {
     modal,
