@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Piloto } from "@/types"
-import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash } from "lucide-react"
+import { ColumnDef } from "@tanstack/react-table";
+import { Piloto } from "@/types";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,28 +11,57 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 export const createColumns = (
   onEdit: (piloto: Piloto) => void,
   onDelete: (piloto: Piloto) => void
 ): ColumnDef<Piloto>[] => [
   {
-    accessorKey: "id_rol",
+    accessorKey: "idPiloto",
     header: "ID",
   },
   {
     accessorKey: "nombre",
-    header: "Nombre"
+    header: "Nombre Completo",
+    cell: ({ row }) => {
+      return `${row.original.nombres} ${row.original.telefono}`;
+    },
   },
   {
-    accessorKey: "descripcion",
-    header: "Descripción",
+    accessorKey: "telefono",
+    header: "telefono",
+  },
+  {
+    accessorKey: "email",
+    header: "email",
+  },
+  {
+    accessorKey: "licencia",
+    header: "Licencia",
+    cell: ({ row }) => {
+      return `${row.original.numeroLicencia} ${row.original.tipoLicencia}`;
+    },
+  },
+  {
+    accessorKey: "fechaVencimientoLicencia",
+    header: "Vencimiento",
+    cell: ({ row }) => {
+      return format(
+        new Date(row.getValue("fechaVencimientoLicencia")),
+        "dd/MM/yyyy",
+        {
+          locale: es,
+        }
+      );
+    },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const Piloto = row.original
+      const Piloto = row.original;
 
       return (
         <DropdownMenu>
@@ -49,7 +78,7 @@ export const createColumns = (
               <Pencil className="mr-2 h-4 w-4" />
               Editar
             </DropdownMenuItem>
-            <DropdownMenuItem 
+            <DropdownMenuItem
               className="text-red-600"
               onClick={() => onDelete(Piloto)}
             >
@@ -58,7 +87,7 @@ export const createColumns = (
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];

@@ -18,16 +18,24 @@ export const createColumns = (
   onDelete: (data: Producto) => void
 ): ColumnDef<Producto>[] => [
   {
-    accessorKey: "id_rol",
+    accessorKey: "id_producto",
     header: "ID",
   },
   {
-    accessorKey: "nombre",
-    header: "Nombre"
+    accessorKey: "sku",
+    header: "sku"
   },
   {
-    accessorKey: "descripcion",
-    header: "Descripción",
+    accessorKey: "costo",
+    header: "costo"
+  },
+  {
+    accessorKey: "precio",
+    header: "precio"
+  },
+  {
+    accessorKey: "unidad_medida",
+    header: "Unidad de medida"
   },
   {
     id: "actions",
