@@ -1,4 +1,3 @@
-// components/users/UserForm.tsx
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -25,6 +24,8 @@ import { useUserStore } from "@/store/users/Users";
 import { createUserSchema, editUserSchema, UserFormValues } from "./UserSchema";
 import { format } from "date-fns";
 import { useUser } from "@/hooks/useUser/useUser";
+import { useRole } from "@/hooks/useRole/useRole";
+import { useSucursal } from "@/hooks/useSucursal/useSucursal";
 
 interface UserFormProps {
   mode: "create" | "edit";
@@ -33,6 +34,8 @@ interface UserFormProps {
 
 export function UserForm({ mode, user }: UserFormProps) {
   const { createUserAsync, updateUserAsync } = useUser();
+  const { roles } = useRole();
+  const { sucursales } = useSucursal();
   const { toggleModal } = useUserStore();
 
   const isEditMode = mode === "edit";
@@ -81,7 +84,7 @@ export function UserForm({ mode, user }: UserFormProps) {
 
       if (isEditMode && user) {
         if (!data.contrasenia || data.contrasenia === "") {
-          const {...dataWithoutPassword } = data;
+          const { ...dataWithoutPassword } = data;
           await updateUserAsync({
             ...dataWithoutPassword,
             fecha_nacimiento: fechaISO,
@@ -285,7 +288,6 @@ export function UserForm({ mode, user }: UserFormProps) {
               )}
             />
 
-            {/* Fecha de Nacimiento */}
             <FormField
               control={form.control}
               name="fecha_nacimiento"
@@ -300,6 +302,7 @@ export function UserForm({ mode, user }: UserFormProps) {
               )}
             />
 
+            {/* Rol - Con datos del hook */}
             <FormField
               control={form.control}
               name="id_rol"
@@ -316,11 +319,14 @@ export function UserForm({ mode, user }: UserFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="1">Administrador</SelectItem>
-                      <SelectItem value="2">Supervisor</SelectItem>
-                      <SelectItem value="3">Evaluador</SelectItem>
-                      <SelectItem value="4">Logistica</SelectItem>
-                      <SelectItem value="5">Piloto</SelectItem>
+                      {roles.map((role) => (
+                        <SelectItem
+                          key={role.id_rol}
+                          value={String(role.id_rol)}
+                        >
+                          {role.nombre} - Nivel {role.nivel}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -328,6 +334,7 @@ export function UserForm({ mode, user }: UserFormProps) {
               )}
             />
 
+            {/* Sucursal - Con datos del hook */}
             <FormField
               control={form.control}
               name="id_sucursal"
@@ -344,8 +351,14 @@ export function UserForm({ mode, user }: UserFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="2">Sucursal Central</SelectItem>
-                      <SelectItem value="3">Sucursal Norte</SelectItem>
+                      {sucursales.map((branch) => (
+                        <SelectItem
+                          key={branch.idSucursal}
+                          value={String(branch.idSucursal)}
+                        >
+                          {branch.nombre} ({branch.codigo})
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -363,8 +376,8 @@ export function UserForm({ mode, user }: UserFormProps) {
             {form.formState.isSubmitting
               ? "Guardando..."
               : isEditMode
-                ? "Guardar Cambios"
-                : "Crear Usuario"}
+              ? "Guardar Cambios"
+              : "Crear Usuario"}
           </Button>
         </div>
       </form>

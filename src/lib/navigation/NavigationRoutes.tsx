@@ -1,18 +1,22 @@
 import {
   Banknote,
   BarChart3,
+  Building,
   Building2,
   ClipboardCheck,
   Coins,
   FileText,
   Home,
+  Map,
   MapPin,
+  MapPinHouse,
   Package,
   Route,
   Settings,
   Shield,
   ShieldCheck,
   ShoppingCart,
+  Store,
   TrendingUp,
   UserCog,
   Users,
@@ -65,6 +69,19 @@ export const navigationItems = [
     ],
   },
   {
+    title: "Gestión de Sucursales",
+    icon: Store,
+    roles: [Role.ADMIN],
+    items: [
+      {
+        title: "Sucursales",
+        icon: Building,
+        url: "/workspace/sucursal",
+        roles: [Role.ADMIN],
+      },
+    ],
+  },
+  {
     title: "Gestión Financiera",
     icon: Banknote,
     roles: [Role.ADMIN],
@@ -79,6 +96,25 @@ export const navigationItems = [
         title: "Moneda",
         icon: Coins,
         url: "/workspace/coin",
+        roles: [Role.ADMIN],
+      },
+    ],
+  },
+  {
+    title: "Gestión Territorial",
+    icon: Map,
+    roles: [Role.ADMIN],
+    items: [
+      {
+        title: "Departamento",
+        icon: MapPinHouse,
+        url: "/workspace/departamento",
+        roles: [Role.ADMIN],
+      },
+      {
+        title: "Municipio",
+        icon: MapPin,
+        url: "/workspace/municipio",
         roles: [Role.ADMIN],
       },
     ],
@@ -174,7 +210,7 @@ export const navigationItems = [
         icon: BarChart3,
         url: "/workspace/evaluo/reportes",
         roles: [Role.ADMIN, Role.EVALUADOR],
-      }
+      },
     ],
   },
   {
