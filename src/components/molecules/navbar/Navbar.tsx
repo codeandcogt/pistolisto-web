@@ -26,7 +26,7 @@ export function Navbar() {
 
   // Verificar si estamos en la ruta /rutas
   const isRutasPage = pathname === "/workspace/rutas";
-  console.log(isRutasPage, "valores")
+
   return (
     <aside 
       className={`p-4 flex gap-4  items-center ${
