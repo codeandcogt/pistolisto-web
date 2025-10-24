@@ -15,32 +15,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ArticleFormValue, ArticleSchema } from "./ArticuloSchema";
-// import { useWarehouse } from "@/hooks/useWarehouse/useWarehouse";
-// import { useSubCategory } from "@/hooks/useSubCategory/useSubCategory";
 import { useArticulo } from "@/hooks/useArticulo/useArticulo";
 import { useArticuloStore } from "@/store/articulo";
-
-interface Articulo {
-  idArticulo: number;
-  nombre: string;
-  descripcion: string;
-  peso: number;
-  dimension: string;
-  color: string;
-  idAlmacen: number;
-  idSubCategoria: number;
-  estado: boolean;
-  fecha_modificacion: string;
-  fecha_creacion: string;
-}
+import { Articulo } from "@/types";
+import { useAlmacen } from "@/hooks/useAlmacen/useAlmacen";
+import { useSubCategoria } from "@/hooks/useSubcategoria/useSubcategoria";
 
 interface ArticleFormProps {
   mode: "create" | "edit";
@@ -49,8 +36,8 @@ interface ArticleFormProps {
 
 export function ArticleForm({ mode, article }: ArticleFormProps) {
   const { createArticuloAsync, updateArticuloAsync } = useArticulo();
-  //   const { warehouses } = useWarehouse();
-  //   const { subCategories } = useSubCategory();
+    const { almacenes } = useAlmacen();
+    const { subcategories } = useSubCategoria();
   const { toggleModal } = useArticuloStore();
 
   const isEditMode = mode === "edit";
@@ -179,7 +166,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
             />
 
             {/* Almacén */}
-            {/* <FormField
+            <FormField
               control={form.control}
               name="idAlmacen"
               render={({ field }) => (
@@ -195,12 +182,12 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {warehouses.map((warehouse) => (
+                      {almacenes.map((warehouse) => (
                         <SelectItem
-                          key={warehouse.idAlmacen}
-                          value={String(warehouse.idAlmacen)}
+                          key={warehouse.id_almacen}
+                          value={String(warehouse.id_almacen)}
                         >
-                          {warehouse.nombre} - {warehouse.ubicacion}
+                          {warehouse.nombre} - {warehouse.tipo_almacen}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -208,10 +195,10 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
             {/* Subcategoría */}
-            {/* <FormField
+            <FormField
               control={form.control}
               name="idSubCategoria"
               render={({ field }) => (
@@ -227,7 +214,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {subCategories.map((subCategory) => (
+                      {subcategories.map((subCategory) => (
                         <SelectItem
                           key={subCategory.idSubCategoria}
                           value={String(subCategory.idSubCategoria)}
@@ -241,7 +228,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                 </FormItem>
               )}
             />
-          */}
+         
           </div>
           {/* Descripción - Ocupa ancho completo */}
           <FormField
