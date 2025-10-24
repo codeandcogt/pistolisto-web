@@ -19,8 +19,7 @@ export const useDepartamento = () => {
   const getDepartamento = useQuery({
     queryKey: ["Departamento", token],
     queryFn: async (): Promise<Departamento[]> => {
-      const response = await get<Departamento[]>("departamento", token ?? undefined);
-
+      const response = await get<Departamento[]>("departamento/all", token ?? undefined);
       if (!response.data) {
         throw new Error(response.message || "No se recibieron datos");
       }
@@ -59,6 +58,8 @@ export const useDepartamento = () => {
         DepartamentoData,
         token ?? undefined
       );
+      console.log(JSON.stringify(DepartamentoData))
+      console.log(response, "departamento")
 
       if (!response.data) {
         throw new Error(response.message || "Error al actualizar");

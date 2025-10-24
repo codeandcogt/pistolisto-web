@@ -18,7 +18,7 @@ export const createColumns = (
   onDelete: (departamento: Departamento) => void
 ): ColumnDef<Departamento>[] => [
   {
-    accessorKey: "id_depatamento",
+    accessorKey: "id_departamento",
     header: "ID",
   },
   {
@@ -28,6 +28,10 @@ export const createColumns = (
   {
     accessorKey: "descripcion",
     header: "Descripción",
+  },
+  {
+    accessorKey: "codigo",
+    header: "Codigo",
   },
   {
     id: "actions",

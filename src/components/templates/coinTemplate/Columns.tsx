@@ -18,7 +18,7 @@ export const createColumns = (
   onDelete: (coin: Coin) => void
 ): ColumnDef<Coin>[] => [
   {
-    accessorKey: "id_rol",
+    accessorKey: "idMoneda",
     header: "ID",
   },
   {
@@ -28,6 +28,18 @@ export const createColumns = (
   {
     accessorKey: "descripcion",
     header: "Descripción",
+  },
+  {
+    accessorKey: "codigo",
+    header: "Codigo",
+  },
+  {
+    accessorKey: "simbolo",
+    header: "Simbolo",
+  },
+  {
+    accessorKey: "tasaCambio",
+    header: "Tasa Cambio",
   },
   {
     id: "actions",

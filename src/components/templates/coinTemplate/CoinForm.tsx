@@ -105,9 +105,6 @@ export function CoinForm({ mode, coin }: CoinFormProps) {
                       }
                     />
                   </FormControl>
-                  <FormDescription>
-                    Código ISO de 3 letras (se convertirá a mayúsculas)
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -139,8 +136,7 @@ export function CoinForm({ mode, coin }: CoinFormProps) {
                   <FormControl>
                     <Input
                       type="number"
-                      step="0.0001"
-                      min="0.0001"
+                      step="1"
                       max="999999.99"
                       placeholder="Ej: 7.85"
                       {...field}
