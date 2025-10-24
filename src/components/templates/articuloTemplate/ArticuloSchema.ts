@@ -32,6 +32,7 @@ export const ArticleSchema = z.object({
   idSubCategoria: z
     .number()
     .min(1, "Debes seleccionar una subcategoría"),
+  imagen: z.string().optional(), 
 });
 
 export type ArticleFormValue = z.infer<typeof ArticleSchema>;

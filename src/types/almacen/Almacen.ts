@@ -1,11 +1,12 @@
 export interface Almacen {
-  id_sucursal: number
+  id_almacen: number
   nombre: string
   codigo: string
   tipo_almacen: string
-  cantidad_maxima: number
+  capacidad_maxima: number
   descripcion: string
+  id_sucursal: number
   estado: boolean
-  fecha_creacion: string
   fecha_modificacion: string
+  fecha_creacion: string
 }

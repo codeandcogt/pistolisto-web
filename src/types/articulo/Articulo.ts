@@ -7,6 +7,7 @@ export interface Articulo {
   color: string
   idAlmacen: number
   idSubCategoria: number
+  imagen?: string
   estado: boolean
   fecha_modificacion: string
   fecha_creacion: string
