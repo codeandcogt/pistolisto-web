@@ -18,6 +18,8 @@ import {
   ShoppingCart,
   Store,
   TrendingUp,
+  Truck,
+  User,
   UserCog,
   Users,
   Warehouse,
@@ -150,6 +152,18 @@ export const navigationItems = [
     roles: [Role.ADMIN, Role.LOGISTICA],
     items: [
       {
+        title: "Piloto",
+        icon: User,
+        url: "/workspace/pilot",
+        roles: [Role.ADMIN, Role.LOGISTICA],
+      },
+      {
+        title: "Vehiculo",
+        icon: Truck,
+        url: "/workspace/vehicle",
+        roles: [Role.ADMIN, Role.LOGISTICA],
+      },
+      {
         title: "Lista de Rutas",
         icon: Route,
         url: "/workspace/rutas",
@@ -175,15 +189,15 @@ export const navigationItems = [
     roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
     items: [
       {
-        title: "Catálogo",
-        icon: Package,
-        url: "/workspace/articulos",
+        title: "Artículo",
+        icon: ShoppingCart,
+        url: "/workspace/articles",
         roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
       },
       {
-        title: "Crear Artículo",
-        icon: ShoppingCart,
-        url: "/workspace/articulos/crear",
+        title: "Producto",
+        icon: Package,
+        url: "/workspace/products",
         roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
       },
       {
