@@ -1,15 +1,26 @@
-// src/components/organism/map/Map.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
-import type { MapContainer as MapContainerType, TileLayer as TileLayerType } from 'react-leaflet'
-import type { LocationMarker as LocationMarkerType } from '@/components/atom'
+import type { ComponentType } from 'react'
+
+type MapContainerProps = {
+  center: [number, number]
+  zoom: number
+  style: React.CSSProperties
+  className: string
+  children: React.ReactNode
+}
+
+type TileLayerProps = {
+  attribution: string
+  url: string
+}
 
 type MapComponents = {
-  MapContainer: typeof MapContainerType
-  TileLayer: typeof TileLayerType
-  LocationMarker: typeof LocationMarkerType
+  MapContainer: ComponentType<MapContainerProps>
+  TileLayer: ComponentType<TileLayerProps>
+  LocationMarker: ComponentType<Record<string, never>>
 }
 
 export default function Map() {
@@ -40,7 +51,7 @@ export default function Map() {
 
   return (
     <div style={{ position: 'relative', height: '100vh', width: '100vw' }}>
-      <style jsx global>{`
+      {/* <style jsx global>{`
         .neon-streets {
           background: #0a0a0a !important;
         }
@@ -79,7 +90,7 @@ export default function Map() {
           stroke: #00ff00 !important;
           filter: drop-shadow(0 0 3px #00ff00);
         }
-      `}</style>
+      `}</style> */}
       
       <MapContainer
         center={[14.6349, -90.5069]}
