@@ -1,10 +1,43 @@
+// src/components/organism/map/Map.tsx
 'use client'
 
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { useEffect, useState } from 'react'
 import 'leaflet/dist/leaflet.css'
-import { LocationMarker } from '@/components/atom'
+import type { MapContainer as MapContainerType, TileLayer as TileLayerType } from 'react-leaflet'
+import type { LocationMarker as LocationMarkerType } from '@/components/atom'
+
+type MapComponents = {
+  MapContainer: typeof MapContainerType
+  TileLayer: typeof TileLayerType
+  LocationMarker: typeof LocationMarkerType
+}
 
 export default function Map() {
+  const [mapComponents, setMapComponents] = useState<MapComponents | null>(null)
+
+  useEffect(() => {
+    Promise.all([
+      import('react-leaflet'),
+      import('@/components/atom')
+    ]).then(([leaflet, atom]) => {
+      setMapComponents({
+        MapContainer: leaflet.MapContainer,
+        TileLayer: leaflet.TileLayer,
+        LocationMarker: atom.LocationMarker,
+      })
+    })
+  }, [])
+
+  if (!mapComponents) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-black">
+        <p className="text-green-500">Cargando mapa...</p>
+      </div>
+    )
+  }
+
+  const { MapContainer, TileLayer, LocationMarker } = mapComponents
+
   return (
     <div style={{ position: 'relative', height: '100vh', width: '100vw' }}>
       <style jsx global>{`
@@ -22,7 +55,6 @@ export default function Map() {
           background: #000;
         }
         
-        /* Excluir marcadores de los filtros */
         .neon-streets .leaflet-marker-pane {
           filter: none !important;
           mix-blend-mode: normal !important;
