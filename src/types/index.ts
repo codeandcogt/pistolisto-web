@@ -14,4 +14,5 @@ export * from "./articulo"
 export * from "./piloto"
 export * from "./producto"
 export * from "./vehiculo"
-
+export * from "./subcategoria"
+export * from "./categoria"

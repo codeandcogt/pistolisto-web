@@ -8,3 +8,5 @@ export * from "./sucursal"
 export * from "./departamento"
 export * from "./minicipio"
 export * from "./rolPermiso"
+export * from "./categoria"
+
