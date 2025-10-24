@@ -18,6 +18,8 @@ import {
   ShoppingCart,
   Store,
   TrendingUp,
+  Truck,
+  User,
   UserCog,
   Users,
   Warehouse,
@@ -149,6 +151,18 @@ export const navigationItems = [
     icon: Route,
     roles: [Role.ADMIN, Role.LOGISTICA],
     items: [
+      {
+        title: "Piloto",
+        icon: User,
+        url: "/workspace/rutas/piloto",
+        roles: [Role.ADMIN, Role.LOGISTICA],
+      },
+      {
+        title: "Vehiculo",
+        icon: Truck,
+        url: "/workspace/vehiculo",
+        roles: [Role.ADMIN, Role.LOGISTICA],
+      },
       {
         title: "Lista de Rutas",
         icon: Route,

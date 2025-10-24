@@ -10,4 +10,8 @@ export * from "./coin"
 export * from "./sucursales"
 export * from "./departamento"
 export * from "./municipalidad"
+export * from "./articulo"
+export * from "./piloto"
+export * from "./producto"
+export * from "./vehiculo"
 
