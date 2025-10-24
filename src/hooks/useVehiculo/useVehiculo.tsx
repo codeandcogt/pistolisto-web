@@ -19,7 +19,7 @@ export const useVehiculo = () => {
   const getVehiculo = useQuery({
     queryKey: ["Vehiculo", token],
     queryFn: async (): Promise<Vehiculo[]> => {
-      const response = await get<Vehiculo[]>("vehiculos/all", token ?? undefined);
+      const response = await get<Vehiculo[]>("vehiculos", token ?? undefined);
 
       if (!response.data) {
         throw new Error(response.message || "No se recibieron datos");

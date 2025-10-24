@@ -19,7 +19,7 @@ export const usePiloto = () => {
   const getPilotos = useQuery({
     queryKey: ["Pilotos", token],
     queryFn: async (): Promise<Piloto[]> => {
-      const response = await get<Piloto[]>("pilotos/all", token ?? undefined);
+      const response = await get<Piloto[]>("pilotos", token ?? undefined);
 
       if (!response.data) {
         throw new Error(response.message || "No se recibieron datos");

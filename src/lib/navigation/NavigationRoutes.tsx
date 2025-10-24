@@ -154,13 +154,13 @@ export const navigationItems = [
       {
         title: "Piloto",
         icon: User,
-        url: "/workspace/rutas/piloto",
+        url: "/workspace/pilot",
         roles: [Role.ADMIN, Role.LOGISTICA],
       },
       {
         title: "Vehiculo",
         icon: Truck,
-        url: "/workspace/vehiculo",
+        url: "/workspace/vehicle",
         roles: [Role.ADMIN, Role.LOGISTICA],
       },
       {
@@ -189,15 +189,15 @@ export const navigationItems = [
     roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
     items: [
       {
-        title: "Catálogo",
-        icon: Package,
-        url: "/workspace/articulos",
+        title: "Artículo",
+        icon: ShoppingCart,
+        url: "/workspace/articles",
         roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
       },
       {
-        title: "Crear Artículo",
-        icon: ShoppingCart,
-        url: "/workspace/articulos/crear",
+        title: "Producto",
+        icon: Package,
+        url: "/workspace/products",
         roles: [Role.ADMIN, Role.SUPERVISOR, Role.EVALUADOR],
       },
       {
