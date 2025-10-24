@@ -1,0 +1,69 @@
+'use client'
+
+import { MapContainer, TileLayer } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+import { LocationMarker } from '@/components/atom'
+
+export default function Map() {
+  return (
+    <div style={{ position: 'relative', height: '100vh', width: '100vw' }}>
+      <style jsx global>{`
+        .neon-streets {
+          background: #0a0a0a !important;
+        }
+        
+        .neon-streets .leaflet-tile-pane {
+          filter: grayscale(1) brightness(0.3) contrast(1.5);
+          mix-blend-mode: screen;
+        }
+        
+        .neon-streets .leaflet-tile {
+          filter: invert(1) hue-rotate(180deg);
+          background: #000;
+        }
+        
+        /* Excluir marcadores de los filtros */
+        .neon-streets .leaflet-marker-pane {
+          filter: none !important;
+          mix-blend-mode: normal !important;
+        }
+        
+        .neon-streets .leaflet-marker-icon {
+          filter: none !important;
+        }
+        
+        .neon-streets .leaflet-tile-pane::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 0%, transparent 70%);
+          pointer-events: none;
+        }
+        
+        .neon-streets path {
+          stroke: #00ff00 !important;
+          filter: drop-shadow(0 0 3px #00ff00);
+        }
+      `}</style>
+      
+      <MapContainer
+        center={[14.6349, -90.5069]}
+        zoom={13}
+        style={{ 
+          height: '100%', 
+          width: '100%',
+        }}
+        className="neon-streets"
+      >
+        <TileLayer
+          attribution='&copy; OpenStreetMap'
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        />
+        <LocationMarker />
+      </MapContainer>
+    </div>
+  )
+}
