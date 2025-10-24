@@ -30,6 +30,10 @@ export const createColumns = (
     header: "Descripción",
   },
   {
+    accessorKey: "codigo",
+    header: "Codigo",
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const Municipio = row.original
