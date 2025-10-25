@@ -47,7 +47,9 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
 
   // Estados para la imagen
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>(article?.imagen || "");
+  const [imagePreview, setImagePreview] = useState<string>(
+    article?.imagen || ""
+  );
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imageError, setImageError] = useState<string>("");
 
@@ -85,7 +87,6 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
       // Validar tipo de archivo
       const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
       if (!validTypes.includes(file.type)) {
-
         setImageError("Solo se permiten imágenes (JPEG, PNG, GIF, WEBP)");
         return;
       }
@@ -117,13 +118,10 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
       if (imageFile) {
         setUploadingImage(true);
         try {
-
           const result = await uploadImage(imageFile, "articulos");
-          
 
           imageUrl = result.url;
         } catch (error) {
-
           setImageError("Error al subir la imagen");
           console.error("Error al subir imagen:", error);
           setUploadingImage(false);
@@ -176,6 +174,7 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
                       fill
                       className="object-cover"
                       sizes="128px"
+                      unoptimized={!imagePreview.startsWith("blob:")} // No optimizar si es de S3
                     />
                     <button
                       type="button"
@@ -378,17 +377,17 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
           <Button type="button" variant="outline" onClick={toggleModal}>
             Cancelar
           </Button>
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={form.formState.isSubmitting || uploadingImage}
           >
             {uploadingImage
               ? "Subiendo imagen..."
               : form.formState.isSubmitting
-              ? "Guardando..."
-              : isEditMode
-              ? "Guardar Cambios"
-              : "Crear Artículo"}
+                ? "Guardando..."
+                : isEditMode
+                  ? "Guardar Cambios"
+                  : "Crear Artículo"}
           </Button>
         </div>
       </form>
