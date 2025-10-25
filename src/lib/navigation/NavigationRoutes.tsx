@@ -163,12 +163,12 @@ export const navigationItems = [
         url: "/workspace/vehicle",
         roles: [Role.ADMIN, Role.LOGISTICA],
       },
-      // {
-      //   title: "Lista de Rutas",
-      //   icon: Route,
-      //   url: "/workspace/rutas",
-      //   roles: [Role.ADMIN, Role.LOGISTICA],
-      // },
+      {
+        title: "Lista de Rutas",
+        icon: Route,
+        url: "/workspace/rutas",
+        roles: [Role.ADMIN, Role.LOGISTICA],
+      },
       // {
       //   title: "Planificación",
       //   icon: MapPin,
