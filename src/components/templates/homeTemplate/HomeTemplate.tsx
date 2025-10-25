@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { DownloadIcon, LogInIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HomeTemplate() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -66,9 +67,6 @@ export default function HomeTemplate() {
     return () => ctx.revert();
   }, []);
 
-  const handleDownload = () => {
-    console.log("Descargando app...");
-  };
 
   return (
     <div
@@ -87,10 +85,12 @@ export default function HomeTemplate() {
             />
           </div>
           <div className="flex gap-3">
-            <Button className="text-sm" variant="outline" onClick={handleDownload}>
+            <Link href="https://expo.dev/accounts/asofimp/projects/pistolisto-mobile/builds/2f3b18e3-cf86-4bcd-ba0c-613dc5224939">
+            <Button className="text-sm" variant="outline" >
               <DownloadIcon className="mr-2 h-4 w-4" />
               Descargar App
             </Button>
+            </Link>
             <Button className="text-sm" onClick={() => router.push("/auth/login")}>
               <LogInIcon className="mr-2 h-4 w-4" />
               Iniciar Sesión
