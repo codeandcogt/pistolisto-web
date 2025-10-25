@@ -129,21 +129,21 @@ export const navigationItems = [
       {
         title: "Lista de Almacenes",
         icon: Warehouse,
-        url: "/workspace/almacenes",
+        url: "/workspace/warehouse",
         roles: [Role.ADMIN, Role.SUPERVISOR, Role.LOGISTICA],
       },
-      {
-        title: "Inventario",
-        icon: Package,
-        url: "/workspace/almacenes/inventario",
-        roles: [Role.ADMIN, Role.SUPERVISOR, Role.LOGISTICA],
-      },
-      {
-        title: "Movimientos",
-        icon: TrendingUp,
-        url: "/workspace/almacenes/movimientos",
-        roles: [Role.ADMIN, Role.SUPERVISOR, Role.LOGISTICA],
-      },
+      // {
+      //   title: "Inventario",
+      //   icon: Package,
+      //   url: "/workspace/almacenes/inventario",
+      //   roles: [Role.ADMIN, Role.SUPERVISOR, Role.LOGISTICA],
+      // },
+      // {
+      //   title: "Movimientos",
+      //   icon: TrendingUp,
+      //   url: "/workspace/almacenes/movimientos",
+      //   roles: [Role.ADMIN, Role.SUPERVISOR, Role.LOGISTICA],
+      // },
     ],
   },
   {

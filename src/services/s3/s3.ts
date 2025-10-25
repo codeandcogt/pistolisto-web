@@ -1,12 +1,24 @@
+import { ACCESKEYID, BUCKETNAME, REGION, SECRETACCESKEY } from '@/config';
 import type { 
   S3UploadResponse, 
   S3MultipleUploadResponse, 
   S3DeleteResponse,
-  S3SignedUrlResponse 
 } from '@/types/s3';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+
+// Cliente S3 configurado para el navegador
+const getS3Client = () => {
+  return new S3Client({
+    region: REGION,
+    credentials: {
+      accessKeyId: ACCESKEYID!,
+      secretAccessKey: SECRETACCESKEY!,
+    },
+  });
+};
 
 /**
- * Subir una imagen a S3
+ * Subir una imagen directamente a S3 desde el cliente
  * @param file - Archivo a subir
  * @param folder - Carpeta en S3 (default: 'uploads')
  * @returns Promise con la respuesta de S3
@@ -15,26 +27,45 @@ export async function uploadImage(
   file: File, 
   folder: string = 'uploads'
 ): Promise<S3UploadResponse> {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('folder', folder);
+  try {
+    // Validar archivo
+    validateImageFile(file);
 
-  const response = await fetch('/api/upload', {
-    method: 'POST',
-    body: formData,
-  });
+    const s3Client = getS3Client();
 
-  const data = await response.json();
-  
-  if (!data.success) {
-    throw new Error(data.error || 'Error al subir imagen');
+    const key = `${folder}/${Date.now()}-${file.name}`;
+
+    // Convertir File a ArrayBuffer
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer);
+
+    // Comando para subir a S3
+    const command = new PutObjectCommand({
+      Bucket: BUCKETNAME!,
+      Key: key,
+      Body: buffer,
+      ContentType: file.type,
+    });
+
+    await s3Client.send(command);
+
+    // Construir URL pública
+    const url = `https://${BUCKETNAME}.s3.${REGION}.amazonaws.com/${key}`;
+
+    return {
+      success: true,
+      url,
+      key,
+      bucket: BUCKETNAME!,
+    };
+  } catch (error) {
+    console.error('Error al subir imagen:', error);
+    throw new Error(error instanceof Error ? error.message : 'Error al subir imagen');
   }
-
-  return data;
 }
 
 /**
- * Subir múltiples imágenes a S3
+ * Subir múltiples imágenes directamente a S3
  * @param files - Array de archivos
  * @param folder - Carpeta en S3
  * @returns Promise con array de respuestas
@@ -43,22 +74,18 @@ export async function uploadMultipleImages(
   files: File[], 
   folder: string = 'uploads'
 ): Promise<S3MultipleUploadResponse> {
-  const formData = new FormData();
-  files.forEach(file => formData.append('files', file));
-  formData.append('folder', folder);
+  try {
+    const uploadPromises = files.map(file => uploadImage(file, folder));
+    const results = await Promise.all(uploadPromises);
 
-  const response = await fetch('/api/upload/multiple', {
-    method: 'POST',
-    body: formData,
-  });
-
-  const data = await response.json();
-  
-  if (!data.success) {
-    throw new Error(data.error || 'Error al subir imágenes');
+    return {
+      success: true,
+      files: results,
+    };
+  } catch (error) {
+    console.error('Error al subir imágenes:', error);
+    throw new Error('Error al subir imágenes');
   }
-
-  return data;
 }
 
 /**
@@ -67,44 +94,25 @@ export async function uploadMultipleImages(
  * @returns Promise con confirmación
  */
 export async function deleteImage(url: string): Promise<S3DeleteResponse> {
-  const response = await fetch('/api/delete', {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url }),
-  });
+  try {
+    const s3Client = getS3Client();
+    const key = getKeyFromUrl(url);
 
-  const data = await response.json();
-  
-  if (!data.success) {
-    throw new Error(data.error || 'Error al eliminar imagen');
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
+      Key: key,
+    });
+
+    await s3Client.send(command);
+
+    return {
+      success: true,
+      message: 'Imagen eliminada correctamente',
+    };
+  } catch (error) {
+    console.error('Error al eliminar imagen:', error);
+    throw new Error('Error al eliminar imagen');
   }
-
-  return data;
-}
-
-/**
- * Obtener URL firmada temporal (para archivos privados)
- * @param url - URL de la imagen
- * @param expiresIn - Segundos de validez (default: 3600 = 1 hora)
- * @returns Promise con URL firmada temporal
- */
-export async function getSignedUrl(
-  url: string, 
-  expiresIn: number = 3600
-): Promise<string> {
-  const response = await fetch('/api/signed-url', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, expiresIn }),
-  });
-
-  const data: S3SignedUrlResponse = await response.json();
-  
-  if (!data.success) {
-    throw new Error('Error al generar URL');
-  }
-
-  return data.signedUrl;
 }
 
 /**
