@@ -19,7 +19,7 @@ export const useAlmacen = () => {
   const getAlmacen = useQuery({
     queryKey: ["Almacen", token],
     queryFn: async (): Promise<Almacen[]> => {
-      const response = await get<Almacen[]>("almacen/all", token ?? undefined);
+      const response = await get<Almacen[]>("almacen", token ?? undefined);
 
       if (!response.data) {
         throw new Error(response.message || "No se recibieron datos");

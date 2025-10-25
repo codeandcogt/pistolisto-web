@@ -81,11 +81,11 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setImageError("");
-
     if (file) {
       // Validar tipo de archivo
       const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
       if (!validTypes.includes(file.type)) {
+
         setImageError("Solo se permiten imágenes (JPEG, PNG, GIF, WEBP)");
         return;
       }
@@ -117,9 +117,13 @@ export function ArticleForm({ mode, article }: ArticleFormProps) {
       if (imageFile) {
         setUploadingImage(true);
         try {
+
           const result = await uploadImage(imageFile, "articulos");
+          
+
           imageUrl = result.url;
         } catch (error) {
+
           setImageError("Error al subir la imagen");
           console.error("Error al subir imagen:", error);
           setUploadingImage(false);
