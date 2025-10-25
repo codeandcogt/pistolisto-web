@@ -5,4 +5,3 @@ export enum Role {
   LOGISTICA = 4,
   PILOTO = 5,
 }
-
